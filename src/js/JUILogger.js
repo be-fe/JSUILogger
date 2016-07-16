@@ -1,11 +1,4 @@
-// 上帝说,你们在 Mini Hi 上的调试有些问题,需要一个库,于是便有了这个库
-
-/**
- *库的结构:
- * 1.界面呈现和操作,一个输入输出界面,界面的拉伸,隐藏和显示
- * 2.处理输入界面,将结果显示在输出界面
- * 3.json,函数等的格式化显示,高亮显示
- * */
+// Mini Hi 在调试过程中有些问题, 控制台无法使用,因而我做了这个工具,用来解决这个问题.
 
 (function (global) {
 
@@ -80,7 +73,6 @@
             input.placeholder = 'input...';
             input.autofocus = 'autofocus';
 
-
             document.body.appendChild(wraper);
 
             wraper.appendChild(btn);
@@ -144,7 +136,6 @@
             input.style.boxSizing = 'border-box';
             input.style.fontSize = '14px';
             input.zIndex = '9999';
-
 
         };
 
@@ -223,7 +214,6 @@
         }
     };
 
-
     JSUILogger.prototype.output = function (value, level) {
 
         if (!level) {
@@ -247,6 +237,7 @@
         li.scrollIntoView();
     };
 
+    // 指令处理
     JSUILogger.prototype.optionHandle = function (opt) {
         var option = opt.substr(1, opt.length);
 
@@ -260,7 +251,6 @@
             alert('filter');
         }
     }
-
 
     JSUILogger.prototype.JSONFormater = function (json) {
 
