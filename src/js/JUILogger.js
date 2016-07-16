@@ -27,7 +27,8 @@
         warning: 'yellow',
         log: 'purple',
         info: 'green',
-        default: '#999'
+        default: '#555',
+        input: '#cf4646'
     };
     var showConsole = true;
 
@@ -96,12 +97,14 @@
             wraper.style.position = 'fixed';
             wraper.style.top = '0';
             wraper.style.left = '0';
+            wraper.zIndex = '10000';
 
             btn.style.width = '40px';
             btn.style.height = '63px'
             btn.style.lineHeight = '63px'
             btn.style.color = 'white';
             btn.style.backgroundColor = '#020202';
+            btn.zIndex = '9999';
 
             btn.style.float = 'left';
             btn.style.cursor = 'pointer';
@@ -118,6 +121,7 @@
             container.style.boxSizing = 'border-box';
             container.style.opacity = '0.6';
             container.style.boxShadow = '0px 6px 5px #020202';
+            container.zIndex = '9999';
 
             output.style.width = '100%';
             output.style.height = 'auto';
@@ -127,6 +131,7 @@
             output.style.minHeight = '0';
             output.style.overflowY = 'scroll';
             output.style.boxSizing = 'border-box';
+            output.zIndex = '9999';
 
             input.style.width = '100%';
             input.style.height = '35px';
@@ -138,6 +143,7 @@
             input.style.paddingLeft = '10px';
             input.style.boxSizing = 'border-box';
             input.style.fontSize = '14px';
+            input.zIndex = '9999';
 
 
         };
@@ -149,6 +155,9 @@
                 if (e.which == 13) {
                     var cmdJson = input.value;
                     cmd.push(cmdJson);
+
+                    self.output(cmdJson, levelColor.input);
+
                     self.input(input.value);
                     cmdIndex = cmd.length - 1;
                 } else if (e.which == 38) {
@@ -199,14 +208,21 @@
     };
 
     JSUILogger.prototype.input = function (value) {
+
+        // 这里首先要对 input 进行初步处理
         input.value = '';
-        try {
-            var res = window.eval(value);
-            this.output(res);
-        } catch (e) {
-            console.log(e);
+        if (value.charAt(0) == ':') {
+            this.optionHandle(value);
+        } else {
+            try {
+                var res = window.eval(value);
+                this.output(res);
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
+
 
     JSUILogger.prototype.output = function (value, level) {
 
@@ -230,6 +246,21 @@
 
         li.scrollIntoView();
     };
+
+    JSUILogger.prototype.optionHandle = function (opt) {
+        var option = opt.substr(1, opt.length);
+
+        if (option == 'clear') {
+            alert('清除');
+        }
+        else if (option == 'close') {
+            alert('关闭');
+        }
+        else if (option == 'filter') {
+            alert('filter');
+        }
+    }
+
 
     JSUILogger.prototype.JSONFormater = function (json) {
 
