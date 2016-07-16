@@ -28,6 +28,7 @@
         info: 'green',
         default: '#999'
     };
+    var showConsole = true;
 
     // 覆盖原生的 console.log
     (function () {
@@ -86,11 +87,16 @@
 
             btn.style.width = '20px';
             btn.style.height = '52px'
+            btn.style.lineHeight = '52px'
+            btn.style.color = 'white';
             btn.style.backgroundColor = '#020202';
             btn.style.position = 'fixed';
             btn.style.top = '0';
             btn.style.left = '0';
             btn.style.cursor = 'pointer';
+            btn.style.textAlign = 'center';
+            btn.innerHTML = '《';
+
 
             container.style.width = '400px';
             container.style.height = 'auto';
@@ -100,10 +106,12 @@
             container.style.top = '0';
             container.style.left = '20px';
             container.style.boxSizing = 'border-box';
+            container.style.boxShadow = '6px 6px 3px #020202';
+            container.style.opacity = '0.6';
 
             output.style.width = '100%';
             output.style.height = 'auto';
-            output.style.maxHeight = '500px';
+            output.style.maxHeight = '200px';
             output.style.padding = '0';
             output.style.margin = '0';
             output.style.minHeight = '0';
@@ -124,6 +132,7 @@
         };
 
         var initEvent = function () {
+
             input.addEventListener('keydown', function (e) {
 
                 if (e.which == 13) {
@@ -157,6 +166,19 @@
 
                 }
             }, false);
+
+            btn.addEventListener('click', function (e) {
+                if (showConsole) {
+                    showConsole = false;
+                    btn.innerHTML = '》';
+                    container.style.visibility = 'hidden';
+                } else {
+                    showConsole = true;
+                    btn.innerHTML = '《';
+                    container.style.visibility = 'visible';
+                }
+            }, false);
+
         };
 
         initUI();
@@ -194,6 +216,8 @@
         li.style.boxSizing = 'border-box';
 
         output.appendChild(li);
+
+        li.scrollIntoView();
     };
 
     JUILogger.prototype.JSONFormater = function (json) {
@@ -262,7 +286,7 @@
 
     JUILogger.prototype.name = name;
 
-    JUILogger.prototype.init = function () {
+    JUILogger.prototype.start = function () {
         this.UI();
     };
 
