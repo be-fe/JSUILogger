@@ -14,6 +14,7 @@
     var version = '1.0.0';
     var author = 'leiquan';
     var console = global.console;
+    var wraper = document.createElement('div');
     var btn = document.createElement('div');
     var container = document.createElement('div');
     var output = document.createElement('ul');
@@ -70,6 +71,7 @@
 
         var initUI = function () {
 
+            wraper.className = 'JSUILogger-wraper';
             btn.className = 'JSUILogger-btn';
             container.className = 'JSUILogger-container';
             output.className = 'JSUILogger-output';
@@ -77,8 +79,11 @@
             input.placeholder = 'input...';
             input.autofocus = 'autofocus';
 
-            document.body.appendChild(btn);
-            document.body.appendChild(container);
+
+            document.body.appendChild(wraper);
+
+            wraper.appendChild(btn);
+            wraper.appendChild(container);
             container.appendChild(output);
             container.appendChild(input);
 
@@ -86,30 +91,33 @@
 
         var initCSS = function () {
 
-            btn.style.width = '20px';
-            btn.style.height = '52px'
-            btn.style.lineHeight = '52px'
+            wraper.style.width = '100%';
+            wraper.style.height = 'auto';
+            wraper.style.position = 'fixed';
+            wraper.style.top = '0';
+            wraper.style.left = '0';
+
+            btn.style.width = '40px';
+            btn.style.height = '63px'
+            btn.style.lineHeight = '63px'
             btn.style.color = 'white';
             btn.style.backgroundColor = '#020202';
-            btn.style.position = 'fixed';
-            btn.style.top = '0';
-            btn.style.left = '0';
+
+            btn.style.float = 'left';
             btn.style.cursor = 'pointer';
             btn.style.textAlign = 'center';
             btn.innerHTML = '《';
             btn.style.userSelect = 'none';
 
 
-            container.style.width = '400px';
+            container.style.width = '600px';
             container.style.height = 'auto';
             container.style.minHeight = '50px';
             container.style.border = '#e3e3e3 1px solid';
-            container.style.position = 'fixed';
-            container.style.top = '0';
-            container.style.left = '20px';
+            container.style.marginLeft = '40px';
             container.style.boxSizing = 'border-box';
-            container.style.boxShadow = '6px 6px 3px #020202';
             container.style.opacity = '0.6';
+            container.style.boxShadow = '0px 6px 5px #020202';
 
             output.style.width = '100%';
             output.style.height = 'auto';
@@ -121,7 +129,7 @@
             output.style.boxSizing = 'border-box';
 
             input.style.width = '100%';
-            input.style.height = '30px';
+            input.style.height = '35px';
             input.style.boxSizing = 'border-box';
             input.style.border = 'none';
             input.style.outline = 'none';
@@ -129,6 +137,7 @@
             input.style.minHeight = '0';
             input.style.paddingLeft = '10px';
             input.style.boxSizing = 'border-box';
+            input.style.fontSize = '14px';
 
 
         };
@@ -208,10 +217,10 @@
         var li = document.createElement('li');
         li.innerHTML = '<span style="color:' + level + '">' + value + '</span>';
         li.style.borderBottom = '1px solid #ccc';
-        li.style.fontSize = '12px';
+        li.style.fontSize = '14px';
         li.style.height = 'auto';
-        li.style.minHeight = '20px';
-        li.style.lineHeight = '20px';
+        li.style.minHeight = '25px';
+        li.style.lineHeight = '25px';
         li.style.padding = '0px';
         li.style.paddingLeft = '10px';
         li.style.margin = '0';
