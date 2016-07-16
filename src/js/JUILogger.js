@@ -10,7 +10,7 @@
 (function (global) {
 
     // 全局不可变变量
-    var name = 'JUILogger';
+    var name = 'JSUILogger';
     var version = '1.0.0';
     var author = 'leiquan';
     var console = global.console;
@@ -24,7 +24,7 @@
         debug: 'blue',
         error: 'red',
         warning: 'yellow',
-        log: 'black',
+        log: 'purple',
         info: 'green',
         default: '#999'
     };
@@ -35,46 +35,47 @@
         console.oldLog = console.log;
 
         console.log = function () {
-            global.JUILogger.output([].join.call(arguments, ''), levelColor.log);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.log);
             this.oldLog.apply(this, arguments);
         };
 
         console.debug = function () {
-            global.JUILogger.output([].join.call(arguments, ''), levelColor.debug);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug);
             this.oldLog.apply(this, arguments);
         };
 
         console.error = function () {
-            global.JUILogger.output([].join.call(arguments, ''), levelColor.error);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.error);
             this.oldLog.apply(this, arguments);
         };
 
         console.info = function () {
-            global.JUILogger.output([].join.call(arguments, ''), levelColor.info);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.info);
             this.oldLog.apply(this, arguments);
         };
 
         console.debug = function () {
-            global.JUILogger.output([].join.call(arguments, ''), levelColor.debug);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug);
             this.oldLog.apply(this, arguments);
         };
     })();
 
-    var JUILogger = function () {
+    var JSUILogger = function () {
         // 类属性
     }
 
-    JUILogger.prototype.UI = function () {
+    JSUILogger.prototype.UI = function () {
 
         var self = this;
 
         var initUI = function () {
 
-            btn.className = 'juilogger-btn';
-            container.className = 'juilogger-container';
-            output.className = 'juilogger-output';
-            input.className = 'juilogger-input';
+            btn.className = 'JSUILogger-btn';
+            container.className = 'JSUILogger-container';
+            output.className = 'JSUILogger-output';
+            input.className = 'JSUILogger-input';
             input.placeholder = 'input...';
+            input.autofocus = 'autofocus';
 
             document.body.appendChild(btn);
             document.body.appendChild(container);
@@ -96,6 +97,7 @@
             btn.style.cursor = 'pointer';
             btn.style.textAlign = 'center';
             btn.innerHTML = '《';
+            btn.style.userSelect = 'none';
 
 
             container.style.width = '400px';
@@ -187,7 +189,7 @@
 
     };
 
-    JUILogger.prototype.input = function (value) {
+    JSUILogger.prototype.input = function (value) {
         input.value = '';
         try {
             var res = window.eval(value);
@@ -197,7 +199,7 @@
         }
     };
 
-    JUILogger.prototype.output = function (value, level) {
+    JSUILogger.prototype.output = function (value, level) {
 
         if (!level) {
             level = levelColor.default;
@@ -220,7 +222,7 @@
         li.scrollIntoView();
     };
 
-    JUILogger.prototype.JSONFormater = function (json) {
+    JSUILogger.prototype.JSONFormater = function (json) {
 
         var p = [],
             push = function (m) {
@@ -280,18 +282,18 @@
         return out;
     };
 
-    JUILogger.prototype.version = version;
+    JSUILogger.prototype.version = version;
 
-    JUILogger.prototype.author = author;
+    JSUILogger.prototype.author = author;
 
-    JUILogger.prototype.name = name;
+    JSUILogger.prototype.name = name;
 
-    JUILogger.prototype.start = function () {
+    JSUILogger.prototype.start = function () {
         this.UI();
     };
 
-    global.JUILogger = new JUILogger();
+    global.JSUILogger = new JSUILogger();
 
-    console.log('Welcome to ' + global.JUILogger.name + ': ' + global.JUILogger.version);
+    console.debug('Welcome to ' + global.JSUILogger.name + ': ' + global.JSUILogger.version);
 
 })(window)
