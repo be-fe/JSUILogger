@@ -272,8 +272,38 @@
         li.scrollIntoView();
     };
 
+    // 过滤,将非 filter 全部隐藏,注意,init 的 welcome 不隐藏
+    JSUILogger.prototype.filter = function (filter) {
+
+        if (filter == 'log' || filter == 'info' || filter == 'debug' || filter == 'error' || filter == 'warning') {
+
+            var children = output.childNodes;
+
+            for (var i = 0; i < children.length; i++) {
+
+                if (children[i].className !== filter && children[i].className !== 'init') {
+                    children[i].style.display = 'none';
+                }
+
+            }
+
+        } else if (filter == 'all') {
+            var children = output.childNodes;
+
+            for (var j = 0; j < children.length; j++) {
+                children[j].style.display = 'block';
+
+            }
+            
+        } else {
+            alert('filter wrong!');
+        }
+
+    }
+
     // 指令处理
     JSUILogger.prototype.optionHandle = function (opt) {
+
         var option = opt.substr(1, opt.length);
 
         if (option == 'clear') {
@@ -282,9 +312,13 @@
         else if (option == 'close') {
             this.close();
         }
-        else if (option == 'filter') {
-            alert('filter');
+        else if (option.substr(0, 6) == 'filter') {
+
+            var filter = option.substr(7, option.length);
+
+            this.filter(filter);
         }
+
     }
 
     JSUILogger.prototype.JSONFormater = function (json) {

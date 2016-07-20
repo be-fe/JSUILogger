@@ -6,8 +6,18 @@
 
 ## Usage:
 
+console.log('log');
+
+console.info('info');
+
+console.debug('debug');
+
+console.error('error');
+
+console.warning('warning');
+
 :clear ----clear the output area
  
 :close ----close the console
 
-:filter ---- [log|debug|error|info|debug] use this command to filter the message such as ':filter=debug',
+:filter ---- [log|debug|error|info|debug] use this command to filter the message such as ':filter=debug'
