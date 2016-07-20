@@ -1,4 +1,4 @@
-// Mini Hi 在调试过程中有些问题, 控制台无法使用,因而我做了这个工具,用来解决这个问题.
+// Mini Hi 在调试过程中有些问题, 控制台无法使用,因而我做了这个工具,用来解决这个问题.在其他的类似场景一样好用.
 
 (function (global) {
 
@@ -21,6 +21,7 @@
         log: 'purple',
         info: 'green',
         default: '#555',
+        init: '#cf4646',
         input: '#cf4646'
     };
     var showConsole = true;
@@ -31,28 +32,33 @@
         console.oldLog = console.log;
 
         console.log = function () {
-            global.JSUILogger.output([].join.call(arguments, ''), levelColor.log);
-            //global.JSUILogger.output(arguments[0], levelColor.log);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.log, 'log');
             this.oldLog.apply(this, arguments);
         };
 
         console.debug = function () {
-            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug, 'debug');
             this.oldLog.apply(this, arguments);
         };
 
         console.error = function () {
-            global.JSUILogger.output([].join.call(arguments, ''), levelColor.error);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.error, 'error');
             this.oldLog.apply(this, arguments);
         };
 
         console.info = function () {
-            global.JSUILogger.output([].join.call(arguments, ''), levelColor.info);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.info, 'info');
             this.oldLog.apply(this, arguments);
         };
 
         console.debug = function () {
-            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug);
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug, 'debug');
+            this.oldLog.apply(this, arguments);
+        };
+
+        // 这是个特殊的方法,只在welcome 的时候使用,给不一样的类名,防止后续被清空
+        console.init = function () {
+            global.JSUILogger.output([].join.call(arguments, ''), levelColor.init, 'init');
             this.oldLog.apply(this, arguments);
         };
 
@@ -193,7 +199,6 @@
 
     };
 
-
     JSUILogger.prototype.close = function () {
         if (showConsole) {
             showConsole = false;
@@ -207,20 +212,25 @@
     };
 
     JSUILogger.prototype.clear = function () {
+
         // 清空命令缓存
         cmd = [];
         cmdIndex = 0;
 
         // 清空输出内容
-        while (output.firstChild) {
-            var oldNode = output.removeChild(output.firstChild);
-            oldNode = null;
+        var exit = false;
+        while (output.lastChild && !exit) {
+
+            if (output.lastChild.className !== 'init') { // 防止清空欢迎语
+                var oldNode = output.removeChild(output.lastChild);
+                oldNode = null;
+            } else {
+                exit = true;
+            }
+
         }
 
-
-
     };
-
 
     JSUILogger.prototype.input = function (value) {
 
@@ -238,7 +248,7 @@
         }
     };
 
-    JSUILogger.prototype.output = function (value, level) {
+    JSUILogger.prototype.output = function (value, level, className) {
 
         if (!level) {
             level = levelColor.default;
@@ -255,6 +265,7 @@
         li.style.paddingLeft = '10px';
         li.style.margin = '0';
         li.style.boxSizing = 'border-box';
+        li.className = className ? className : '';
 
         output.appendChild(li);
 
@@ -267,7 +278,6 @@
 
         if (option == 'clear') {
             this.clear();
-            console.debug('Welcome to ' + global.JSUILogger.name + ': ' + global.JSUILogger.version);
         }
         else if (option == 'close') {
             this.close();
@@ -347,8 +357,10 @@
         this.UI();
     };
 
+    // 初始化逻辑
     global.JSUILogger = new JSUILogger();
 
-    console.debug('Welcome to ' + global.JSUILogger.name + ': ' + global.JSUILogger.version);
+    // 欢迎提示语
+    console.init('Welcome to ' + global.JSUILogger.name + ': ' + global.JSUILogger.version);
 
-})(window)
+})(window);
