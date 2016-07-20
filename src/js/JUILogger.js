@@ -321,6 +321,8 @@
 
             temp = option; //恢复变量
 
+        } else {
+            alert('Operate faild!');
         }
 
     }
