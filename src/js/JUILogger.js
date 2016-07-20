@@ -27,10 +27,12 @@
 
     // 覆盖原生的 console.log
     (function () {
+
         console.oldLog = console.log;
 
         console.log = function () {
             global.JSUILogger.output([].join.call(arguments, ''), levelColor.log);
+            //global.JSUILogger.output(arguments[0], levelColor.log);
             this.oldLog.apply(this, arguments);
         };
 
@@ -53,6 +55,7 @@
             global.JSUILogger.output([].join.call(arguments, ''), levelColor.debug);
             this.oldLog.apply(this, arguments);
         };
+
     })();
 
     var JSUILogger = function () {
@@ -121,7 +124,7 @@
             output.style.padding = '0';
             output.style.margin = '0';
             output.style.minHeight = '0';
-            output.style.overflowY = 'scroll';
+            output.style.overflowY = 'auto';
             output.style.boxSizing = 'border-box';
             output.zIndex = '9999';
 
@@ -156,18 +159,18 @@
                     if (cmdIndex == 0) {
                         input.value = cmd[0] ? cmd[0] : '';
                     } else {
-                        input.value = cmd[cmdIndex];
+                        input.value = cmd[cmdIndex] ? cmd[cmdIndex] : '';
                         cmdIndex--;
                     }
 
                 } else if (e.which == 40) {
 
                     if (cmdIndex == cmd.length - 1) {
-                        input.value = cmd[cmdIndex];
+                        input.value = cmd[cmdIndex] ? cmd[cmdIndex] : '';
                     } else {
 
                         if (cmd[cmdIndex]) {
-                            input.value = cmd[cmdIndex];
+                            input.value = cmd[cmdIndex] ? cmd[cmdIndex] : '';
                             cmdIndex++;
                         } else {
                             input.value = '';
@@ -179,15 +182,7 @@
             }, false);
 
             btn.addEventListener('click', function (e) {
-                if (showConsole) {
-                    showConsole = false;
-                    btn.innerHTML = '》';
-                    container.style.visibility = 'hidden';
-                } else {
-                    showConsole = true;
-                    btn.innerHTML = '《';
-                    container.style.visibility = 'visible';
-                }
+                self.close();
             }, false);
 
         };
@@ -197,6 +192,35 @@
         initEvent();
 
     };
+
+
+    JSUILogger.prototype.close = function () {
+        if (showConsole) {
+            showConsole = false;
+            btn.innerHTML = '》';
+            container.style.visibility = 'hidden';
+        } else {
+            showConsole = true;
+            btn.innerHTML = '《';
+            container.style.visibility = 'visible';
+        }
+    };
+
+    JSUILogger.prototype.clear = function () {
+        // 清空命令缓存
+        cmd = [];
+        cmdIndex = 0;
+
+        // 清空输出内容
+        while (output.firstChild) {
+            var oldNode = output.removeChild(output.firstChild);
+            oldNode = null;
+        }
+
+
+
+    };
+
 
     JSUILogger.prototype.input = function (value) {
 
@@ -242,10 +266,11 @@
         var option = opt.substr(1, opt.length);
 
         if (option == 'clear') {
-            alert('清除');
+            this.clear();
+            console.debug('Welcome to ' + global.JSUILogger.name + ': ' + global.JSUILogger.version);
         }
         else if (option == 'close') {
-            alert('关闭');
+            this.close();
         }
         else if (option == 'filter') {
             alert('filter');
