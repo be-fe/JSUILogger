@@ -292,9 +292,8 @@
 
             for (var j = 0; j < children.length; j++) {
                 children[j].style.display = 'block';
-
             }
-            
+
         } else {
             alert('filter wrong!');
         }
@@ -306,17 +305,22 @@
 
         var option = opt.substr(1, opt.length);
 
+        var temp = option; // 缓存变量
+
         if (option == 'clear') {
             this.clear();
         }
         else if (option == 'close') {
             this.close();
         }
-        else if (option.substr(0, 6) == 'filter') {
+        else if (temp.substr(0, 6) == 'filter') {
 
-            var filter = option.substr(7, option.length);
+            var filter = temp.substr(7, temp.length);
 
             this.filter(filter);
+
+            temp = option; //恢复变量
+
         }
 
     }
